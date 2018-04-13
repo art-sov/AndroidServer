@@ -1,5 +1,6 @@
-package dispatcher.model.dao;
+package dispatcher.model.repository;
 
+import dispatcher.model.dao.StationDao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
