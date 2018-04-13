@@ -1,4 +1,4 @@
-package model;
+package dispatcher.model;
 
 /**
  * Created by Sovalov.AV on 11.04.2018.

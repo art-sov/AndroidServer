@@ -1,4 +1,4 @@
-package model;
+package dispatcher.model;
 
 import java.util.List;
 
