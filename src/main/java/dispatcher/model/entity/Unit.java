@@ -4,64 +4,49 @@ package dispatcher.model.entity;
  * Created by Sovalov.AV on 12.04.2018.
  */
 public class Unit {
-    private int id;
-    private int codeStantion;
-    private int unitGroup;
-    private int unitSubgroup;
-    private String name;
-    private String specification;
-    private int och;
-    private int active;
+   private String shortnameStationRus;
+   private int stationOch;
+   private String unitName;
+   private int unitId;
+   private int och;
+   private int stationCode;
+   private float ti;
+   private int typeObj;
+   private float workUnit;
 
     public Unit() {
     }
 
-    public int getId() {
-        return id;
+    public String getShortnameStationRus() {
+        return shortnameStationRus;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setShortnameStationRus(String shortnameStationRus) {
+        this.shortnameStationRus = shortnameStationRus;
     }
 
-    public int getCodeStantion() {
-        return codeStantion;
+    public int getStationOch() {
+        return stationOch;
     }
 
-    public void setCodeStantion(int codeStantion) {
-        this.codeStantion = codeStantion;
+    public void setStationOch(int stationOch) {
+        this.stationOch = stationOch;
     }
 
-    public int getUnitGroup() {
-        return unitGroup;
+    public String getUnitName() {
+        return unitName;
     }
 
-    public void setUnitGroup(int unitGroup) {
-        this.unitGroup = unitGroup;
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
     }
 
-    public int getUnitSubgroup() {
-        return unitSubgroup;
+    public int getUnitId() {
+        return unitId;
     }
 
-    public void setUnitSubgroup(int unitSubgroup) {
-        this.unitSubgroup = unitSubgroup;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSpecification() {
-        return specification;
-    }
-
-    public void setSpecification(String specification) {
-        this.specification = specification;
+    public void setUnitId(int unitId) {
+        this.unitId = unitId;
     }
 
     public int getOch() {
@@ -72,11 +57,48 @@ public class Unit {
         this.och = och;
     }
 
-    public int getActive() {
-        return active;
+    public int getStationCode() {
+        return stationCode;
     }
 
-    public void setActive(int active) {
-        this.active = active;
+    public void setStationCode(int stationCode) {
+        this.stationCode = stationCode;
+    }
+
+    public float getTi() {
+        return ti;
+    }
+
+    public void setTi(float ti) {
+        this.ti = ti;
+    }
+
+    public int getTypeObj() {
+        return typeObj;
+    }
+
+    public void setTypeObj(int typeObj) {
+        this.typeObj = typeObj;
+    }
+
+    public float getWorkUnit() {
+        return workUnit;
+    }
+
+    public void setWorkUnit(float workUnit) {
+        this.workUnit = workUnit;
+    }
+
+    @Override
+    public String toString() {
+        return "\nShortNameStation: " + shortnameStationRus +
+        " OCH: "  + stationOch +
+        " UNIT_NAME: " + unitName +
+        " UNIT_ID: " + unitId +
+        " OCH: " + och +
+        " STAN_COD: " + stationCode +
+        " TI: " + ti +
+        " TYPE_OBJ: " + typeObj +
+        " WORK_UNIT: " + workUnit;
     }
 }

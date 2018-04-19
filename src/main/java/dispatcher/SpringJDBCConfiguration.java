@@ -2,8 +2,12 @@ package dispatcher;
 
 import dispatcher.model.dao.LastInfoDao;
 import dispatcher.model.dao.StationDao;
+import dispatcher.model.dao.UnitDao;
+import dispatcher.model.dao.UnitStatusDao;
 import dispatcher.model.repository.LastInfoDaoImpl;
 import dispatcher.model.repository.StationDaoImpl;
+import dispatcher.model.repository.UnitDaoImpl;
+import dispatcher.model.repository.UnitStatusDaoImpl;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,5 +52,18 @@ public class SpringJDBCConfiguration {
         LastInfoDaoImpl lastInfoDao = new LastInfoDaoImpl();
         lastInfoDao.setJdbcTemplate(jdbcTemplate());
         return lastInfoDao;
+    }
+
+    @Bean
+    public UnitDao unitDao(){
+        UnitDaoImpl unitDao = new UnitDaoImpl();
+        unitDao.setJdbcTemplate(jdbcTemplate());
+        return unitDao;
+    }
+    @Bean
+    public UnitStatusDao UnitStatusDao(){
+        UnitStatusDaoImpl unitStatusDao = new UnitStatusDaoImpl();
+        unitStatusDao.setJdbcTemplate(jdbcTemplate());
+        return unitStatusDao;
     }
 }

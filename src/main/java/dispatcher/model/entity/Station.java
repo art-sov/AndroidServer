@@ -3,20 +3,17 @@ package dispatcher.model.entity;
 /**
  * Created by Sovalov.AV on 12.04.2018.
  */
-public class Stantion {
+public class Station {
     private int id;
     private int codeEnergySystem;
-    private int code;
     private String type;
     private int och;
     private String shortNameRus;
     private String shortNameUkr;
     private String fullNameRus;
     private String fullNameUkr;
-    private int stanSqlLink;
-    private int stanScLink;
 
-    public Stantion() {
+    public Station() {
     }
 
     public long getId() {
@@ -33,14 +30,6 @@ public class Stantion {
 
     public void setCodeEnergySystem(int codeEnergySystem) {
         this.codeEnergySystem = codeEnergySystem;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
     }
 
     public String getType() {
@@ -91,19 +80,4 @@ public class Stantion {
         this.fullNameUkr = fullNameUkr;
     }
 
-    public int getStanSqlLink() {
-        return stanSqlLink;
-    }
-
-    public void setStanSqlLink(int stanSqlLink) {
-        this.stanSqlLink = stanSqlLink;
-    }
-
-    public int getStanScLink() {
-        return stanScLink;
-    }
-
-    public void setStanScLink(int stanScLink) {
-        this.stanScLink = stanScLink;
-    }
 }

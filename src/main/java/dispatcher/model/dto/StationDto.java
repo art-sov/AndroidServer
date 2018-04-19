@@ -1,5 +1,6 @@
 package dispatcher.model.dto;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -7,13 +8,15 @@ import java.util.List;
  */
 public class StationDto {
     private int id;
+    private Date date;
     private String name;
     private float coalValue;
     private float oilValue;
     private float gasValue;
-    private float currentPower;
+    private float power;
+    private int och;
     private String unitValue;
-    private List<UnitDto> unitDtoList;
+    private List<BlockDto> blockDtoList;
 
     public StationDto() {
     }
@@ -28,6 +31,14 @@ public class StationDto {
 
     public String getName() {
         return name;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setName(String name) {
@@ -58,12 +69,20 @@ public class StationDto {
         this.gasValue = gasValue;
     }
 
-    public float getCurrentPower() {
-        return currentPower;
+    public float getPower() {
+        return power;
     }
 
-    public void setCurrentPower(float currentPower) {
-        this.currentPower = currentPower;
+    public void setPower(float power) {
+        this.power = power;
+    }
+
+    public int getOch() {
+        return och;
+    }
+
+    public void setOch(int och) {
+        this.och = och;
     }
 
     public String getUnitValue() {
@@ -74,11 +93,24 @@ public class StationDto {
         this.unitValue = unitValue;
     }
 
-    public List<UnitDto> getUnitDtoList() {
-        return unitDtoList;
+    public List<BlockDto> getBlockDtoList() {
+        return blockDtoList;
     }
 
-    public void setUnitDtoList(List<UnitDto> unitDtoList) {
-        this.unitDtoList = unitDtoList;
+    public void setBlockDtoList(List<BlockDto> unitDtoList) {
+        this.blockDtoList = unitDtoList;
+    }
+
+    @Override
+    public String toString() {
+        return "\nid: " + id +
+        " date: " + date +
+        " name: " + name +
+        " coal: " + coalValue +
+        " oil: " + oilValue +
+        " gas: " + gasValue +
+        " power: " + power +
+        " sklad: " + unitValue +
+        " blocks: " + blockDtoList;
     }
 }

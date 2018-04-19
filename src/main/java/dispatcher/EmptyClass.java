@@ -61,5 +61,7 @@ public class EmptyClass {
 
         System.out.println(timestamp1);
         System.out.println(timestamp2);
+
+        System.out.println("Timestamp: " + new Timestamp(l_date1));
     }
 }
