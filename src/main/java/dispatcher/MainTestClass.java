@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Created by Sovalov.AV on 11.04.2018.
  */
-public class EmptyClass {
+public class MainTestClass {
     public static void main(String[] args) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy'_'HH:mm");
         String i_date = null;

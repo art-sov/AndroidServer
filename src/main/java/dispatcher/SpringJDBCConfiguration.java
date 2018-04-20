@@ -8,8 +8,10 @@ import dispatcher.model.repository.LastInfoDaoImpl;
 import dispatcher.model.repository.StationDaoImpl;
 import dispatcher.model.repository.UnitDaoImpl;
 import dispatcher.model.repository.UnitStatusDaoImpl;
+import dispatcher.model.service.StationService;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -19,6 +21,7 @@ import javax.sql.DataSource;
  * Created by Sovalov.AV on 13.04.2018.
  */
 @Configuration
+@ComponentScan(basePackages = "dispatcher")
 public class SpringJDBCConfiguration {
 
     @Bean
@@ -65,5 +68,9 @@ public class SpringJDBCConfiguration {
         UnitStatusDaoImpl unitStatusDao = new UnitStatusDaoImpl();
         unitStatusDao.setJdbcTemplate(jdbcTemplate());
         return unitStatusDao;
+    }
+    @Bean
+    StationService stationService(){
+        return new StationService();
     }
 }
