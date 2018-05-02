@@ -4,6 +4,7 @@ import dispatcher.model.dao.UnitStatusDao;
 import dispatcher.model.entity.UnitStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * Created by Sovalov.AV on 17.04.2018.
  */
+@Repository
 public class UnitStatusDaoImpl implements UnitStatusDao{
 
     private JdbcTemplate jdbcTemplate;
