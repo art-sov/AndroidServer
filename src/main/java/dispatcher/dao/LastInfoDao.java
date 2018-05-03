@@ -1,8 +1,7 @@
-package dispatcher.model.dao;
+package dispatcher.dao;
 
-import dispatcher.model.entity.LastInfo;
+import dispatcher.model.LastInfo;
 
-import java.util.Date;
 import java.util.List;
 
 /**

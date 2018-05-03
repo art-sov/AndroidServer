@@ -1,4 +1,4 @@
-package dispatcher.model.entity;
+package dispatcher.model;
 
 /**
  * Created by Sovalov.AV on 12.04.2018.

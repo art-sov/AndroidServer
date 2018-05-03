@@ -1,7 +1,7 @@
-package dispatcher.model.repository;
+package dispatcher.dao;
 
-import dispatcher.model.dao.LastInfoDao;
-import dispatcher.model.entity.LastInfo;
+import dispatcher.model.LastInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -14,12 +14,14 @@ import java.util.List;
 /**
  * Created by Sovalov.AV on 13.04.2018.
  */
+
 @Repository
 public class LastInfoDaoImpl implements LastInfoDao{
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate){
+    @Autowired
+    public LastInfoDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

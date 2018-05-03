@@ -1,4 +1,4 @@
-package dispatcher.model.dto;
+package dispatcher.dto;
 
 /**
 * <param>station</param>          STATUS.LIST_STAN      STAN_FULLNAME_RUS

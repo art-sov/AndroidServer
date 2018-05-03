@@ -1,7 +1,7 @@
-package dispatcher.model.repository;
+package dispatcher.dao;
 
-import dispatcher.model.dao.UnitStatusDao;
-import dispatcher.model.entity.UnitStatus;
+import dispatcher.model.UnitStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -14,12 +14,14 @@ import java.util.List;
 /**
  * Created by Sovalov.AV on 17.04.2018.
  */
+
 @Repository
 public class UnitStatusDaoImpl implements UnitStatusDao{
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate){
+    @Autowired
+    public UnitStatusDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

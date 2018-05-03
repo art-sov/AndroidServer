@@ -1,4 +1,4 @@
-package dispatcher.model.dto;
+package dispatcher.dto;
 
 import java.util.Date;
 import java.util.List;

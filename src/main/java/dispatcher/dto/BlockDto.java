@@ -1,6 +1,4 @@
-package dispatcher.model.dto;
-
-import dispatcher.model.entity.Unit;
+package dispatcher.dto;
 
 /**
  * Created by Sovalov.AV on 17.04.2018.

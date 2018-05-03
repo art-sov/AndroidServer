@@ -1,8 +1,8 @@
-package dispatcher.model.repository;
+package dispatcher.dao;
 
-import dispatcher.model.dao.StationDao;
-import dispatcher.model.dto.StationDto;
-import dispatcher.model.entity.Station;
+import dispatcher.dto.StationDto;
+import dispatcher.model.Station;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -14,12 +14,14 @@ import java.util.List;
 /**
  * Created by Sovalov.AV on 13.04.2018.
  */
+
 @Repository
 public class StationDaoImpl implements StationDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate){
+    @Autowired
+    public StationDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

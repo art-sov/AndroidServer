@@ -1,4 +1,4 @@
-package dispatcher.model.entity;
+package dispatcher.model;
 
 import java.util.Date;
 
@@ -6,6 +6,7 @@ import java.util.Date;
  * Created by Sovalov.AV on 13.04.2018.
  */
 public class LastInfo {
+
     private Date time;
     private int index;
     private int value;

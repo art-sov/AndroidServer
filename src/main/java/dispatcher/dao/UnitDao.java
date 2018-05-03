@@ -1,6 +1,6 @@
-package dispatcher.model.dao;
+package dispatcher.dao;
 
-import dispatcher.model.entity.Unit;
+import dispatcher.model.Unit;
 
 import java.util.List;
 

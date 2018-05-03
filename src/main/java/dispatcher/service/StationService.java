@@ -1,18 +1,15 @@
-package dispatcher.model.service;
+package dispatcher.service;
 
-import dispatcher.SpringJDBCConfiguration;
-import dispatcher.model.dao.LastInfoDao;
-import dispatcher.model.dao.StationDao;
-import dispatcher.model.dao.UnitDao;
-import dispatcher.model.dao.UnitStatusDao;
-import dispatcher.model.dto.BlockDto;
-import dispatcher.model.dto.StationDto;
-import dispatcher.model.dto.UnitDto;
-import dispatcher.model.entity.LastInfo;
-import dispatcher.model.entity.Station;
-import dispatcher.model.entity.Unit;
-import dispatcher.model.entity.UnitStatus;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import dispatcher.dao.*;
+import dispatcher.dto.BlockDto;
+import dispatcher.dto.StationDto;
+import dispatcher.dto.UnitDto;
+import dispatcher.model.LastInfo;
+import dispatcher.model.Station;
+import dispatcher.model.Unit;
+import dispatcher.model.UnitStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,24 +17,31 @@ import java.util.List;
 /**
  * Created by Sovalov.AV on 20.04.2018.
  */
+
+@Service
 public class StationService {
 
-    private AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(
-            SpringJDBCConfiguration.class);
-
-    private StationDao stationDao = applicationContext.getBean(StationDao.class);
-    private LastInfoDao lastInfoDao = applicationContext.getBean(LastInfoDao.class);
-    private UnitDao unitDao = applicationContext.getBean(UnitDao.class);
-    private UnitStatusDao unitStatusDao = applicationContext.getBean(UnitStatusDao.class);
-
-
-    private List<Unit> unitList = unitDao.getAllUnitsInfo();
-    private List<UnitStatus> statusList = unitStatusDao.getAllUnitStatus();
-    private List<LastInfo> infoList = lastInfoDao.getLastInfo();
+    private final StationDaoImpl stationDao;
+    private final LastInfoDaoImpl lastInfoDao;
+    private final UnitDaoImpl unitDao;
+    private final UnitStatusDaoImpl unitStatusDao;
 
     private List<UnitDto> dtoList = new ArrayList<UnitDto>();
 
+    @Autowired
+    public StationService(StationDaoImpl stationDao, LastInfoDaoImpl lastInfoDao,
+                          UnitDaoImpl unitDao, UnitStatusDaoImpl unitStatusDao) {
+        this.stationDao = stationDao;
+        this.lastInfoDao = lastInfoDao;
+        this.unitDao = unitDao;
+        this.unitStatusDao = unitStatusDao;
+    }
+
     public List<StationDto> getStationCondition() {
+
+        List<Unit> unitList = unitDao.getAllUnitsInfo();
+        List<UnitStatus> statusList = unitStatusDao.getAllUnitStatus();
+        List<LastInfo> infoList = lastInfoDao.getLastInfo();
 
         for (Unit unit : unitList) {
             UnitDto dto = new UnitDto();
@@ -187,7 +191,6 @@ public class StationService {
                 station.setPower(power);
             }
         }
-        applicationContext.close();
         return stationList;
     }
 }

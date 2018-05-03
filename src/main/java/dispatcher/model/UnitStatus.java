@@ -1,4 +1,4 @@
-package dispatcher.model.entity;
+package dispatcher.model;
 
 import java.util.Date;
 
