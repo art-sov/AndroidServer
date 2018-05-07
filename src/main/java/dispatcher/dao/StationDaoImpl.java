@@ -2,6 +2,7 @@ package dispatcher.dao;
 
 import dispatcher.dto.StationDto;
 import dispatcher.model.Station;
+import dispatcher.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,10 +20,12 @@ import java.util.List;
 public class StationDaoImpl implements StationDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private DateUtil dateUtil;
 
     @Autowired
-    public StationDaoImpl(JdbcTemplate jdbcTemplate) {
+    public StationDaoImpl(JdbcTemplate jdbcTemplate, DateUtil dateUtil) {
         this.jdbcTemplate = jdbcTemplate;
+        this.dateUtil = dateUtil;
     }
 
     public String getStationFullName(int id) {
@@ -32,9 +35,13 @@ public class StationDaoImpl implements StationDao {
     }
 
     public List<StationDto> getAllStationDto() {
-       String sql = "SELECT U.DATES, U.STANCOD, trunc(U.COAL_REST/1000, 1) COAL, trunc(U.OIL_REST/1000, 1) OIL, \n" +
+
+        String date = dateUtil.getDateYesterday();
+        System.out.println("dateYesterday: " + date);
+
+        String sql = "SELECT U.DATES, U.STANCOD, trunc(U.COAL_REST/1000, 1) COAL, trunc(U.OIL_REST/1000, 1) OIL, \n" +
                "trunc(U.GAS_OUT/24, 1) GAS \n" +
-               "FROM COMMON.FUEL U WHERE U.DATES = TRUNC(TO_DATE('06.05.2018','dd.mm.yyyy')) ORDER BY STANCOD";
+               "FROM COMMON.FUEL U WHERE U.DATES = TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) ORDER BY STANCOD";
        List<StationDto> stationList = jdbcTemplate.query(sql, new RowMapper<StationDto>() {
            public StationDto mapRow(ResultSet resultSet, int i) throws SQLException {
                StationDto station = new StationDto();

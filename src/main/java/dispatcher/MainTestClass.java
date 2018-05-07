@@ -1,5 +1,9 @@
 package dispatcher;
 
+import dispatcher.util.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +14,12 @@ import java.util.Date;
  * Created by Sovalov.AV on 11.04.2018.
  */
 public class MainTestClass {
+
+    @Autowired
+    private static DateUtil dateUtil;
+
     public static void main(String[] args) throws ParseException {
+
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy'_'HH:mm");
         String i_date = null;
         String i_date_today = null;
@@ -63,5 +72,23 @@ public class MainTestClass {
         System.out.println(timestamp2);
 
         System.out.println("Timestamp: " + new Timestamp(l_date1));
+
+        System.out.println("nanos: " + timestamp1.getNanos());
+
+        System.out.println("=============================================================");
+
+
+//        Calendar currentCalendar = Calendar.getInstance();
+//        currentCalendar.set(Calendar.SECOND, 0);
+        SimpleDateFormat formatDate  = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
+        Date currentDate = new Date();
+        String dateStr = formatDate.format(currentDate) + ":00";
+        System.out.println("dateStr: " + dateStr);
+
+        System.out.println("=============================================================");
+
+
+
     }
 }

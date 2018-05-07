@@ -1,6 +1,7 @@
 package dispatcher.dao;
 
 import dispatcher.model.UnitStatus;
+import dispatcher.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,14 +19,17 @@ import java.util.List;
 @Repository
 public class UnitStatusDaoImpl implements UnitStatusDao{
 
+    private DateUtil dateUtil;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public UnitStatusDaoImpl(JdbcTemplate jdbcTemplate) {
+    public UnitStatusDaoImpl(JdbcTemplate jdbcTemplate, DateUtil dateUtil) {
         this.jdbcTemplate = jdbcTemplate;
+        this.dateUtil = dateUtil;
     }
-
     public List<UnitStatus> getAllUnitStatus(){
+
+        String date = dateUtil.getDate();
 
         List<UnitStatus> unitStatusList = new ArrayList<UnitStatus>();
         String sql = "SELECT L.STAN_COD, C.*, T.ACT_COLOR, T.ACT_SHORTNAME, T.ACT_FULLNAME\n" +
@@ -36,9 +40,9 @@ public class UnitStatusDaoImpl implements UnitStatusDao{
                 "AND L.UNIT_ID <> 10040 \n" +
                 "AND L.UNIT_ID <> 10041 \n" +
                 "AND C.UNIT_ID = L.UNIT_ID \n" +
-                "AND ((C.BEGI <= TO_DATE('19.04.2018','dd.mm.yyyy') \n" +
-                "\tAND C.ENDI >= TO_DATE('19.04.2018','dd.mm.yyyy'))\n" +
-                "OR (C.ENDI <= TO_DATE('19.04.2018','dd.mm.yyyy') \n" +
+                "AND ((C.BEGI <= TO_DATE('"+ date +"','dd.mm.yyyy HH24:MI:SS') \n" +
+                "\tAND C.ENDI >= TO_DATE('"+ date +"','dd.mm.yyyy HH24:MI:SS'))\n" +
+                "OR (C.ENDI <= TO_DATE('"+ date +"','dd.mm.yyyy HH24:MI:SS') \n" +
                 "\tAND C.F_END = 0)) \n" +
                 "AND NOT L.STAN_COD \n" +
                 "IN (370084, 513130, 513133, 513134, 513135, 513532, 513531, 513533, 563737)\n" +
