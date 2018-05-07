@@ -34,7 +34,7 @@ public class StationDaoImpl implements StationDao {
     public List<StationDto> getAllStationDto() {
        String sql = "SELECT U.DATES, U.STANCOD, trunc(U.COAL_REST/1000, 1) COAL, trunc(U.OIL_REST/1000, 1) OIL, \n" +
                "trunc(U.GAS_OUT/24, 1) GAS \n" +
-               "FROM COMMON.FUEL U WHERE U.DATES = TRUNC(TO_DATE('18.04.2018','dd.mm.yyyy')) ORDER BY STANCOD";
+               "FROM COMMON.FUEL U WHERE U.DATES = TRUNC(TO_DATE('06.05.2018','dd.mm.yyyy')) ORDER BY STANCOD";
        List<StationDto> stationList = jdbcTemplate.query(sql, new RowMapper<StationDto>() {
            public StationDto mapRow(ResultSet resultSet, int i) throws SQLException {
                StationDto station = new StationDto();

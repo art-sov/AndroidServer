@@ -33,11 +33,11 @@ public class LastInfoDaoImpl implements LastInfoDao{
                 "WHERE (AR.TIME, AR.IND) IN (SELECT /*+INDEX_COMBINE(BR TIME_ARHIVTI IND_ARHIVTI)*/ \n" +
                 "\tMAX(BR.TIME), BR.IND \n" +
                 "FROM OIK_BASE.ARHIVTI BR WHERE BR.TIME \n" +
-                "BETWEEN TRUNC((TO_DATE('19.04.2018','dd.mm.yyyy'))-2/1440,'HH') - 1/24 \n" +
-                "AND (TO_DATE('19.04.2018','dd.mm.yyyy')) \n" +
+                "BETWEEN TRUNC((TO_DATE('07.05.2018','dd.mm.yyyy'))-2/1440,'HH') - 1/24 \n" +
+                "AND (TO_DATE('07.05.2018','dd.mm.yyyy')) \n" +
                 "GROUP BY BR.IND) \n" +
-                "AND AR.TIME BETWEEN TRUNC((TO_DATE('19.04.2018','dd.mm.yyyy')) - 2/1440,'HH') - 1/24 \n" +
-                "AND (TO_DATE('19.04.2018','dd.mm.yyyy')) \n" +
+                "AND AR.TIME BETWEEN TRUNC((TO_DATE('07.05.2018','dd.mm.yyyy')) - 2/1440,'HH') - 1/24 \n" +
+                "AND (TO_DATE('07.05.2018','dd.mm.yyyy')) \n" +
                 "AND AR.IND IN (SELECT FU.TI FROM STATUS.FULL_UNIT_TI FU ) ORDER BY 2 ASC";
         //SELECT l.ind, l.params, b.name FROM OIK_BASE.LAST_SREZ l, OIK_BASE.BOOK_TI b WHERE l.IND = b.IND
 
