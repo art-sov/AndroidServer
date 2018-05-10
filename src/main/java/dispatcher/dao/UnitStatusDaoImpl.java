@@ -62,7 +62,7 @@ public class UnitStatusDaoImpl implements UnitStatusDao{
                 unitStatus.setComment(resultSet.getString("rem"));
                 unitStatus.setActionEdit(resultSet.getDate("cor_time"));
                 unitStatus.setOperator(resultSet.getString("cod_op"));
-                unitStatus.setColor(resultSet.getString("act_color"));
+                unitStatus.setColor((resultSet.getString("act_color").trim()));
                 return unitStatus;
             }
         });
