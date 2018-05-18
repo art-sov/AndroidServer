@@ -17,7 +17,10 @@ import java.util.List;
 @RestController
 public class StationConditionController {
 
-    private final StationService stationService;
+   // @Autowired
+    private StationService stationService;
+
+   // @Autowired
     private DateUtil dateUtil;
 
     @Autowired
@@ -29,9 +32,8 @@ public class StationConditionController {
     @RequestMapping(value = "/condition", method = RequestMethod.GET)
     public ResponseEntity<List<StationDto>> getStationCondition(@RequestParam String date){
 
-        //todo решить проблему передачи в параметре null
         dateUtil.setDate(date);
-        //dateUtil.setDate("09.05.2018 07:00");
+
         List<StationDto> stationDtoList = stationService.getStationCondition();
             if (stationDtoList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
