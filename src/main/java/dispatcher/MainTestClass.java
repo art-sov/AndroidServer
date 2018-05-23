@@ -1,14 +1,20 @@
 package dispatcher;
 
+import dispatcher.dto.StationDto;
+import dispatcher.service.StationService;
 import dispatcher.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Sovalov.AV on 11.04.2018.
@@ -18,7 +24,13 @@ public class MainTestClass {
     @Autowired
     private static DateUtil dateUtil;
 
-    public static void main(String[] args) throws ParseException {
+    @Autowired
+    private static StationService stationService;
+
+    public static void main(String[] args) throws ParseException, IOException {
+
+        String content = new String(Files.readAllBytes(Paths.get("src/main/resources/response.txt")));
+        System.out.println(content);
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy'_'HH:mm");
         String i_date = null;
@@ -87,8 +99,5 @@ public class MainTestClass {
         System.out.println("dateStr: " + dateStr);
 
         System.out.println("=============================================================");
-
-
-
     }
 }
