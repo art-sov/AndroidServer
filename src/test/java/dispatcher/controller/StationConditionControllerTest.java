@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
@@ -31,22 +32,12 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class StationConditionControllerTest {
 
-    private static ArrayList<StationDto> listStation;
-    private static JsonArray jsonArray;
+    private static String content;
 
     @BeforeClass
-    public static void parseJSONFile() throws IOException, JSONException {
+    public static void parseJSONFile() throws IOException {
         String filename = "src/test/resources/response.txt";
-        String content = new String(Files.readAllBytes(Paths.get(filename)));
-
-        JsonParser jsonParser = new JsonParser();
-        jsonArray = jsonParser.parse(content).getAsJsonArray();
-
-        Gson gson = new Gson();
-        Type token = new TypeToken<List<StationDto>>() {
-        }.getType();
-
-        listStation = gson.fromJson(jsonArray, token);
+        content = new String(Files.readAllBytes(Paths.get(filename)));
     }
 
     @Mock
@@ -57,9 +48,8 @@ public class StationConditionControllerTest {
     @InjectMocks
     private StationConditionController sut;
 
-
     @Test
-    public void getStationCondition() {
+    public void isGetStationConditionInvoked() {
         //prepare
         when(stationServiceMock.getStationCondition()).thenReturn(ImmutableList.of());
         //testing
@@ -69,18 +59,32 @@ public class StationConditionControllerTest {
     }
 
     @Test
-    public void getSizeListStations() {
+    public void testSizeListStations() {
 
-        when(stationServiceMock.getStationCondition()).thenReturn(listStation);
+        JsonParser jsonParser = new JsonParser();
+        JsonArray array = jsonParser.parse(content).getAsJsonArray();
+        Gson gson = new Gson();
+        Type token = new TypeToken<List<StationDto>>() {
+        }.getType();
+        List<StationDto> list = gson.fromJson(array, token);
+
+        when(stationServiceMock.getStationCondition()).thenReturn(list);
         List<StationDto> response = sut.getStationCondition("current").getBody();
         assertEquals(46, response.size());
     }
 
     @Test
-    public void getListUnitFromLuhanskStation() throws JSONException {
+    public void testListUnitFromLuhanskStation() throws JSONException {
+
+        JsonParser jsonParser = new JsonParser();
+        JsonArray array = jsonParser.parse(content).getAsJsonArray();
+        Gson gson = new Gson();
+        Type token = new TypeToken<List<StationDto>>() {
+        }.getType();
+        List<StationDto> list = gson.fromJson(array, token);
 
         //prepare
-        when(stationServiceMock.getStationCondition()).thenReturn(listStation);
+        when(stationServiceMock.getStationCondition()).thenReturn(list);
 
         List<String> listUnitOfLuhansk = new ArrayList<>();
         listUnitOfLuhansk.add("9");
@@ -91,15 +95,15 @@ public class StationConditionControllerTest {
         listUnitOfLuhansk.add("14");
         listUnitOfLuhansk.add("15");
 
-        JsonElement element = jsonArray.get(0);
+        JsonElement element = array.get(0);
         JsonObject obj = element.getAsJsonObject();
         String name = obj.get("name").getAsString();
 
         List<String> nameOfUnits = new ArrayList<>();
 
-        if (name.equals("Луганская ТЭС")){
+        if (name.equals("Луганская ТЭС")) {
             JsonArray arrayBlock = (JsonArray) obj.get("blockDtoList");
-            for (int i = 0; i < arrayBlock.size(); i++){
+            for (int i = 0; i < arrayBlock.size(); i++) {
                 JsonObject block = arrayBlock.get(i).getAsJsonObject();
                 JsonObject unit1 = block.get("unit1").getAsJsonObject();
                 String nameUnit = unit1.get("name").getAsString();
@@ -108,5 +112,17 @@ public class StationConditionControllerTest {
         }
         //validate
         assertThat(nameOfUnits, is(listUnitOfLuhansk));
+    }
+
+    @Test
+    public void testHttpStatusNotFound(){
+
+        ResponseEntity actual = new ResponseEntity(HttpStatus.NOT_FOUND);
+        List<StationDto> list = new ArrayList<>();
+
+        when(stationServiceMock.getStationCondition()).thenReturn(list);
+        ResponseEntity expected = sut.getStationCondition("");
+
+        assertEquals(expected, actual);
     }
 }

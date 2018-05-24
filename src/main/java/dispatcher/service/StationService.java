@@ -26,7 +26,6 @@ public class StationService {
     private final UnitDaoImpl unitDao;
     private final UnitStatusDaoImpl unitStatusDao;
 
-    private List<UnitDto> dtoList = new ArrayList<UnitDto>();
 
     @Autowired
     public StationService(StationDaoImpl stationDao, LastInfoDaoImpl lastInfoDao,
@@ -38,6 +37,8 @@ public class StationService {
     }
 
     public List<StationDto> getStationCondition() {
+
+        List<UnitDto> dtoList = new ArrayList<UnitDto>();
 
         List<Unit> unitList = unitDao.getAllUnitsInfo();
         List<UnitStatus> statusList = unitStatusDao.getAllUnitStatus();
