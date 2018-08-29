@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,28 +106,36 @@ public class StationService {
         }
 
         List<Station> stationEntityList = stationDao.getAllStation();
-        List<StationDto> stationList = stationDao.getAllStationDto();
+        List<StationDto> stationDtoList = stationDao.getAllStationDto();
 
-        for (StationDto station : stationList) {
+        Date date = stationDtoList.get(0).getDate();
+
+        stationDtoList.add(1, new StationDto(513002, date));
+        stationDtoList.add(0, new StationDto(370094, date));
+        stationDtoList.add(0, new StationDto(370092, date));
+        stationDtoList.add(0, new StationDto(370079, date));
+        stationDtoList.add(0, new StationDto(370078, date));
+
+        for (StationDto stationDto : stationDtoList) {
             for (Station entity : stationEntityList) {
-                if (station.getId() == entity.getId()) {
-                    station.setName(entity.getFullNameRus());
-                    station.setOch(entity.getOch());
+                if (stationDto.getId() == entity.getId()) {
+                    stationDto.setName(entity.getFullNameRus());
+                    stationDto.setOch(entity.getOch());
                 }
             }
 
-            station.setBlockDtoList(new ArrayList<BlockDto>());
+            stationDto.setBlockDtoList(new ArrayList<BlockDto>());
             int power = 0;
             String och1;
             String och2;
             float ochArray[] = new float[]{0, 0};
 
             for (BlockDto block : blockList) {
-                if (station.getId() == block.getStationCode()) {
-                    station.getBlockDtoList().add(block);
+                if (stationDto.getId() == block.getStationCode()) {
+                    stationDto.getBlockDtoList().add(block);
                     power += block.getPower();
 
-                    if (station.getOch() == 1) {
+                    if (stationDto.getOch() == 1) {
                         //> 10 ,так как показатели телеметрии могут быть 1 или 2 при выключенном блоке
                         if (block.getPower() > 10) {
                             if (block.getUnit2() != null) {
@@ -146,7 +155,7 @@ public class StationService {
                         } else {
                             och1 = String.valueOf(ochArray[0]);
                         }
-                        station.setUnitValue(och1);
+                        stationDto.setUnitValue(och1);
                     }
                     //если станция из двух очередей блоков
                     else {
@@ -186,12 +195,12 @@ public class StationService {
                         } else {
                             och2 = String.valueOf(ochArray[1]);
                         }
-                        station.setUnitValue(och1 + "+" + och2);
+                        stationDto.setUnitValue(och1 + "+" + och2);
                     }
                 }
-                station.setPower(power);
+                stationDto.setPower(power);
             }
         }
-        return stationList;
+        return stationDtoList;
     }
 }

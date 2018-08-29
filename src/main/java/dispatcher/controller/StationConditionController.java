@@ -1,6 +1,7 @@
 package dispatcher.controller;
 
 import dispatcher.dto.StationDto;
+import dispatcher.model.User;
 import dispatcher.service.StationService;
 import dispatcher.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,11 @@ public class StationConditionController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         return new ResponseEntity<>(stationDtoList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/authorization", method = RequestMethod.GET)
+    public ResponseEntity<User> getAuthToken(){
+        User user = new User("authToken");
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

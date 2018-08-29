@@ -42,7 +42,7 @@ public class StationDaoImpl implements StationDao {
         String sql = "SELECT U.DATES, U.STANCOD, trunc(U.COAL_REST/1000, 1) COAL, trunc(U.OIL_REST/1000, 1) OIL, \n" +
                "trunc(U.GAS_OUT/24, 1) GAS \n" +
                "FROM COMMON.FUEL U WHERE U.DATES = TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) ORDER BY STANCOD";
-       List<StationDto> stationList = jdbcTemplate.query(sql, new RowMapper<StationDto>() {
+        List<StationDto> stationList = jdbcTemplate.query(sql, new RowMapper<StationDto>() {
            public StationDto mapRow(ResultSet resultSet, int i) throws SQLException {
                StationDto station = new StationDto();
                station.setId(resultSet.getInt("stancod"));

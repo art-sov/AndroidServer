@@ -21,6 +21,11 @@ public class StationDto {
     public StationDto() {
     }
 
+    public StationDto(int id, Date date){
+        this.id = id;
+        this.date = date;
+    }
+
     public int getId() {
         return id;
     }

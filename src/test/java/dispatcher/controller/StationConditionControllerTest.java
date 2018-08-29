@@ -73,46 +73,46 @@ public class StationConditionControllerTest {
         assertEquals(46, response.size());
     }
 
-    @Test
-    public void testListUnitFromLuhanskStation() throws JSONException {
-
-        JsonParser jsonParser = new JsonParser();
-        JsonArray array = jsonParser.parse(content).getAsJsonArray();
-        Gson gson = new Gson();
-        Type token = new TypeToken<List<StationDto>>() {
-        }.getType();
-        List<StationDto> list = gson.fromJson(array, token);
-
-        //prepare
-        when(stationServiceMock.getStationCondition()).thenReturn(list);
-
-        List<String> listUnitOfLuhansk = new ArrayList<>();
-        listUnitOfLuhansk.add("9");
-        listUnitOfLuhansk.add("10");
-        listUnitOfLuhansk.add("11");
-        listUnitOfLuhansk.add("12");
-        listUnitOfLuhansk.add("13");
-        listUnitOfLuhansk.add("14");
-        listUnitOfLuhansk.add("15");
-
-        JsonElement element = array.get(0);
-        JsonObject obj = element.getAsJsonObject();
-        String name = obj.get("name").getAsString();
-
-        List<String> nameOfUnits = new ArrayList<>();
-
-        if (name.equals("Луганская ТЭС")) {
-            JsonArray arrayBlock = (JsonArray) obj.get("blockDtoList");
-            for (int i = 0; i < arrayBlock.size(); i++) {
-                JsonObject block = arrayBlock.get(i).getAsJsonObject();
-                JsonObject unit1 = block.get("unit1").getAsJsonObject();
-                String nameUnit = unit1.get("name").getAsString();
-                nameOfUnits.add(nameUnit);
-            }
-        }
-        //validate
-        assertThat(nameOfUnits, is(listUnitOfLuhansk));
-    }
+//    @Test
+//    public void testListUnitFromLuhanskStation() throws JSONException {
+//
+//        JsonParser jsonParser = new JsonParser();
+//        JsonArray array = jsonParser.parse(content).getAsJsonArray();
+//        Gson gson = new Gson();
+//        Type token = new TypeToken<List<StationDto>>() {
+//        }.getType();
+//        List<StationDto> list = gson.fromJson(array, token);
+//
+//        //prepare
+//        when(stationServiceMock.getStationCondition()).thenReturn(list);
+//
+//        List<String> listUnitOfLuhansk = new ArrayList<>();
+//        listUnitOfLuhansk.add("9");
+//        listUnitOfLuhansk.add("10");
+//        listUnitOfLuhansk.add("11");
+//        listUnitOfLuhansk.add("12");
+//        listUnitOfLuhansk.add("13");
+//        listUnitOfLuhansk.add("14");
+//        listUnitOfLuhansk.add("15");
+//
+//        JsonElement element = array.get(0);
+//        JsonObject obj = element.getAsJsonObject();
+//        String name = obj.get("name").getAsString();
+//
+//        List<String> nameOfUnits = new ArrayList<>();
+//
+//        if (name.equals("Луганская ТЭС")) {
+//            JsonArray arrayBlock = (JsonArray) obj.get("blockDtoList");
+//            for (int i = 0; i < arrayBlock.size(); i++) {
+//                JsonObject block = arrayBlock.get(i).getAsJsonObject();
+//                JsonObject unit1 = block.get("unit1").getAsJsonObject();
+//                String nameUnit = unit1.get("name").getAsString();
+//                nameOfUnits.add(nameUnit);
+//            }
+//        }
+//        //validate
+//        assertThat(nameOfUnits, is(listUnitOfLuhansk));
+//    }
 
     @Test
     public void testHttpStatusNotFound(){
