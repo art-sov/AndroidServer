@@ -12,6 +12,19 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 @SpringBootApplication
 public class MainAppClass extends SpringBootServletInitializer{
 
+    /*Разкомметнировать переопределенный метод здесь.
+    В классе pom.xml:
+    1) выбрать <packaging>war</packaging> и закомментировать jar
+    2) раскомментировать <start-class>dispatcher.MainAppClass</start-class>
+    3) расскоментировать
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+    */
 //    @Override
 //    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 //        return builder.sources(MainAppClass.class);
