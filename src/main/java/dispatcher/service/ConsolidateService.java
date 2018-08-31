@@ -2,6 +2,7 @@ package dispatcher.service;
 
 import dispatcher.dao.ConsolidateReportDaoImpl;
 import dispatcher.model.BalanceIPSUkraine;
+import dispatcher.model.ConsumptionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,13 @@ public class ConsolidateService {
 
     public List<BalanceIPSUkraine> getConsolidateReport() {
         return consolidateReportDao.getBalance();
+    }
+
+    public List<ConsumptionControl> getConsumptionControl() {
+        return consolidateReportDao.getConsumption();
+    }
+
+    public String getMaxTime(){
+        return consolidateReportDao.getMaxTime();
     }
 }

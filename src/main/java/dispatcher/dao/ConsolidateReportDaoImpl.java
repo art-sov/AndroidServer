@@ -31,6 +31,7 @@ public class ConsolidateReportDaoImpl implements ConsolidateReportDao {
         this.dateUtil = dateUtil;
     }
 
+    //consolidate report table 1
     public List<BalanceIPSUkraine> getBalance() {
         String date = dateUtil.getDate();
 
@@ -89,10 +90,201 @@ public class ConsolidateReportDaoImpl implements ConsolidateReportDao {
         return balanceList;
     }
 
-    public ConsumptionControl getConsumption() {
-        return null;
+    //-----------------------------------------------------------------------------------
+    //consolidate report table 2
+    public List<ConsumptionControl> getConsumption() {
+        String date = dateUtil.getDate();
+
+        String sql = "SELECT CASE WHEN n.N=1 THEN 1 WHEN n.N=2 THEN 2 WHEN n.N=3  THEN 3\n" +
+                "            WHEN n.N=4 THEN 4 WHEN n.N=5 THEN 5 WHEN n.N=6  THEN 6\n" +
+                "            WHEN n.N=7 THEN 7 WHEN n.N=8 THEN 8 WHEN n.N=10 THEN 10 \n" +
+                "            END ID,\n" +
+                "       r.PARAMS E_FAKT,o.O_FAKT,g.PLN, o.O_FAKT-g.PLN DIFF FROM\n" +
+                "(SELECT  1 N FROM DUAL UNION\n" +
+                "SELECT  2 N FROM DUAL UNION\n" +
+                "SELECT  3 N FROM DUAL UNION\n" +
+                "SELECT  4 N FROM DUAL UNION\n" +
+                "SELECT  5 N FROM DUAL UNION\n" +
+                "SELECT  6 N FROM DUAL UNION\n" +
+                "SELECT  7 N FROM DUAL UNION\n" +
+                "SELECT  8 N FROM DUAL UNION\n" +
+                "SELECT 10 N FROM DUAL) n,       \n" +
+                "--  ФАКТ ЕНЕРГОСИСТЕМ\n" +
+                "(SELECT                  1 N, NULL PARAMS FROM DUAL  \n" +
+                "  UNION\n" +
+                "SELECT /*+PK_ARHIVTI */  2 N, PARAMS FROM OIK_BASE.ARHIVTI WHERE IND=1609 and TIME= \n" +
+                "(SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1)\n" +
+                "  UNION\n" +
+                "SELECT /*+PK_ARHIVTI */  3 N, PARAMS FROM OIK_BASE.ARHIVTI WHERE IND=1615 and TIME= \n" +
+                "(SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1)\n" +
+                "  UNION\n" +
+                "SELECT /*+PK_ARHIVTI */  4 N, PARAMS FROM OIK_BASE.ARHIVTI WHERE IND=1611 and TIME= \n" +
+                "(SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1)\n" +
+                "  UNION\n" +
+                "SELECT /*+PK_ARHIVTI */  5 N, PARAMS FROM OIK_BASE.ARHIVTI WHERE IND=1608 and TIME= \n" +
+                "(SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1)\n" +
+                "  UNION\n" +
+                "SELECT /*+PK_ARHIVTI */  6 N, PARAMS FROM OIK_BASE.ARHIVTI WHERE IND=1614 and TIME= \n" +
+                "(SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1)\n" +
+                "  UNION\n" +
+                "SELECT /*+PK_ARHIVTI */  7 N, PARAMS FROM OIK_BASE.ARHIVTI WHERE IND=1613 and TIME= \n" +
+                "(SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1) \n" +
+                "  UNION\n" +
+                "SELECT   8 N, NULL FROM DUAL   \n" +
+                "  UNION\n" +
+                "SELECT /*+PK_ARHIVTI */  10 N, PARAMS FROM OIK_BASE.ARHIVTI WHERE IND=1628 and TIME= \n" +
+                "(SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1)) r,\n" +
+                "--  ФАКТ обленерго\n" +
+                "(SELECT /*+PK_ARHIVTI */  1 N, NULL O_FAKT FROM DUAL \n" +
+                "    UNION \n" +
+                " SELECT /*+PK_ARHIVTI */  2 N, SUM(PARAMS)  O_FAKT FROM OIK_BASE.ARHIVTI WHERE \n" +
+                " IND IN(1096,1097,1098) and   TIME =  \n" +
+                " (SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1)  GROUP BY TIME\n" +
+                "    UNION \n" +
+                " SELECT /*+PK_ARHIVTI */  3 N, SUM(PARAMS)  O_FAKT FROM OIK_BASE.ARHIVTI \n" +
+                " WHERE IND IN(1126,1127,1128,1099,1100) and TIME = \n" +
+                " (SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1) GROUP BY TIME\n" +
+                "    UNION \n" +
+                " SELECT /*+PK_ARHIVTI */  4 N, SUM(PARAMS)  O_FAKT FROM OIK_BASE.ARHIVTI WHERE \n" +
+                " IND in (1101,1106,1107,1108,1109) AND TIME = \n" +
+                " (SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1) GROUP BY TIME \n" +
+                "    UNION \n" +
+                " SELECT /*+PK_ARHIVTI */  5 N, SUM(PARAMS)  O_FAKT FROM OIK_BASE.ARHIVTI WHERE \n" +
+                " IND IN(1092,1093,1094,1095) and TIME = \n" +
+                " (SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1) GROUP BY TIME\n" +
+                "    UNION \n" +
+                " SELECT /*+PK_ARHIVTI */  6 N, SUM(PARAMS)  O_FAKT FROM OIK_BASE.ARHIVTI WHERE \n" +
+                " IND IN(1119,1124,1125) and TIME = \n" +
+                " (SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1) GROUP BY TIME\n" +
+                "    UNION \n" +
+                " SELECT /*+PK_ARHIVTI */  7 N, SUM(PARAMS)  O_FAKT FROM OIK_BASE.ARHIVTI WHERE \n" +
+                " IND IN(1112,1113,1116,1117,1118) and TIME = \n" +
+                " (SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1) GROUP BY TIME\n" +
+                "    UNION \n" +
+                " SELECT /*+PK_ARHIVTI */  8 N, NULL O_FAKT FROM DUAL\n" +
+                "    UNION \n" +
+                " SELECT /*+PK_ARHIVTI */  10 N, SUM(PARAMS) O_FAKT FROM OIK_BASE.ARHIVTI WHERE IND in \n" +
+                "         (1096,1097,1098,1126,1127,1128,1099,1100,1101,1106,1107,1108,1109,1092,1093,\n" +
+                "          1094,1095,1119,1124,1125,1112,1113,1116,1117,1118) AND  TIME=    \n" +
+                "(SELECT /* +INDEX (PK_ARHIVTI) */  TIME FROM OIK_BASE.ARHIVTI  \n" +
+                "WHERE IND =1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT MAX(PARAMS) FROM OIK_BASE.ARHIVTI \n" +
+                "WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1)  GROUP BY TIME) o,\n" +
+                                "(SELECT /*+INDEX_COMBINE(PLAN)*/  1 N, NULL PLN FROM DUAL  \n" +
+                "    UNION \n" +
+                " SELECT /*+INDEX_COMBINE(PLAN)*/  2 N, VALUE PLN FROM OIK_BASE.PLAN WHERE IND=650 and TIMES = TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1/24 \n" +
+                "    UNION \n" +
+                " SELECT /*+INDEX_COMBINE(PLAN)*/  4 N, VALUE PLN FROM OIK_BASE.PLAN WHERE IND=652 and TIMES = TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1/24  \n" +
+                "    UNION \n" +
+                " SELECT /*+INDEX_COMBINE(PLAN)*/  5 N, VALUE PLN FROM OIK_BASE.PLAN WHERE IND=649 and TIMES = TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1/24  \n" +
+                "    UNION \n" +
+                " SELECT /*+INDEX_COMBINE(PLAN)*/  6 N, VALUE PLN FROM OIK_BASE.PLAN WHERE IND=655 and TIMES = TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1/24  \n" +
+                "    UNION \n" +
+                " SELECT /*+INDEX_COMBINE(PLAN)*/  7 N, VALUE PLN FROM OIK_BASE.PLAN WHERE IND=654 and TIMES = TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1/24  \n" +
+                "    UNION \n" +
+                " SELECT /*+INDEX_COMBINE(PLAN)*/  8 N, VALUE PLN FROM OIK_BASE.PLAN WHERE IND=653 and TIMES = TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1/24  \n" +
+                "    UNION \n" +
+                " SELECT /*+INDEX_COMBINE(PLAN)*/  3 N, SUM(VALUE) PLN FROM OIK_BASE.PLAN WHERE IND in ( 651,656) AND TIMES=\n" +
+                "    TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1/24  GROUP BY TIMES \n" +
+                "    UNION \n" +
+                " SELECT /*+INDEX_COMBINE(PLAN)*/  10 N, SUM(VALUE) PLN FROM OIK_BASE.PLAN WHERE IND in \n" +
+                "    (650,652,649,655,654,653, 651,656) AND TIMES=TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1/24 GROUP BY TIMES) g\n" +
+                "WHERE n.N=r.N(+) AND \n" +
+                "      n.N=o.N(+) AND \n" +
+                "      n.N=g.N(+)\n";
+        List<ConsumptionControl> consumptionList = jdbcTemplate.query(sql, new RowMapper<ConsumptionControl>() {
+
+            public ConsumptionControl mapRow(ResultSet resultSet, int i) throws SQLException {
+                ConsumptionControl row = new ConsumptionControl();
+                row.setColumn1(resultSet.getInt(Constants.TABLE_CONSUMPTION_COLUMN_1));
+                row.setColumn2(resultSet.getInt(Constants.TABLE_CONSUMPTION_COLUMN_2));
+                row.setColumn3(resultSet.getInt(Constants.TABLE_CONSUMPTION_COLUMN_3));
+                row.setColumn4(resultSet.getInt(Constants.TABLE_CONSUMPTION_COLUMN_4));
+                row.setColumn5(resultSet.getInt(Constants.TABLE_CONSUMPTION_COLUMN_5));
+                return row;
+            }
+        });
+        return consumptionList;
     }
 
+    public String getMaxTime() {
+        String date = dateUtil.getDate();
+        String sql = "SELECT /* +INDEX(PK_ARHIVTI)  */  TO_CHAR(TIME,'hh24:mi') T_MAX FROM OIK_BASE.ARHIVTI  WHERE IND = 1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1 \n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
+                "SELECT /* +INDEX(PK_ARHIVTI)  */  MAX(PARAMS) FROM OIK_BASE.ARHIVTI WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
+                "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50)) AND ROWNUM=1\n";
+        return jdbcTemplate.queryForObject(sql, String.class);
+    }
+
+    //---------------------------------------------------------------------------------
+    //consolidate report table 3
     public HydroStationCondition getHydroStationCondition() {
         return null;
     }

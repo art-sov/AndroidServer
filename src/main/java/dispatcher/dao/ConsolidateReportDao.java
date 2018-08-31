@@ -13,7 +13,9 @@ public interface ConsolidateReportDao {
 
     List<BalanceIPSUkraine> getBalance();
 
-    ConsumptionControl getConsumption();
+    String getMaxTime();
+
+    List<ConsumptionControl> getConsumption();
 
     HydroStationCondition getHydroStationCondition();
 
