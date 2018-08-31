@@ -3,6 +3,7 @@ package dispatcher.controller;
 import dispatcher.dto.StationDto;
 import dispatcher.model.BalanceIPSUkraine;
 import dispatcher.model.ConsumptionControl;
+import dispatcher.model.HydroStationCondition;
 import dispatcher.model.User;
 import dispatcher.service.ConsolidateService;
 import dispatcher.service.StationService;
@@ -81,4 +82,11 @@ public class StationConditionController {
     }
 
     //consolidate report table 3
+    @RequestMapping(value = "consolidate_hydrostation", method = RequestMethod.GET)
+    public ResponseEntity<List<HydroStationCondition>> getHydroStation(@RequestParam String date){
+        dateUtil.setDate(date);
+
+        List<HydroStationCondition> hydroStationConditions = consolidateService.getHydroStationCondition();
+        return new ResponseEntity<List<HydroStationCondition>>(hydroStationConditions, HttpStatus.OK);
+    }
 }

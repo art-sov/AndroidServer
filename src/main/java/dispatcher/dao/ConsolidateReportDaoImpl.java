@@ -285,7 +285,37 @@ public class ConsolidateReportDaoImpl implements ConsolidateReportDao {
 
     //---------------------------------------------------------------------------------
     //consolidate report table 3
-    public HydroStationCondition getHydroStationCondition() {
-        return null;
+    public List<HydroStationCondition> getHydroStationCondition() {
+        String date = dateUtil.getDateYesterday();
+
+        String sql = "SELECT ID,NAME,TO_CHAR(NPR,'999.99') NPR,HI_BJEF,INCOME,OUTCOME FROM\n" +
+                "  (SELECT 1 ID, 103.0 NPR, 513531 STAN_COD FROM DUAL UNION\n" +
+                "   SELECT 2 ID, 91.5  NPR, 513533 STAN_COD FROM DUAL UNION\n" +
+                "   SELECT 3 ID, 81.0  NPR, 513133 STAN_COD FROM DUAL UNION\n" +
+                "   SELECT 4 ID, 64.0  NPR, 513134 STAN_COD FROM DUAL UNION\n" +
+                "   SELECT 5 ID, 51.4  NPR, 513130 STAN_COD FROM DUAL UNION\n" +
+                "   SELECT 6 ID, 16.0  NPR, 513135 STAN_COD FROM DUAL UNION\n" +
+                "   SELECT 7 ID, 121.0 NPR, 563737 STAN_COD FROM DUAL UNION\n" +
+                "   SELECT 8 ID, NULL  NPR, 563738 STAN_COD FROM DUAL) n,\n" +
+                "  (SELECT g.STAN_COD,l.STAN_SHORTNAME_UKR NAME,g.HI_BJEF,g.INCOME,g.OUTCOME\n" +
+                "   FROM STATUS.LIST_GES_PARAMS g, STATUS.LIST_STAN l\n" +
+                "   WHERE DATES=trunc(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))\n" +
+                "         AND g.STAN_COD=l.STAN_COD ) v\n" +
+                "WHERE n.STAN_COD=v.STAN_COD(+)\n" +
+                "ORDER BY ID";
+        List<HydroStationCondition> resultList = jdbcTemplate.query(sql, new RowMapper<HydroStationCondition>() {
+            @Override
+            public HydroStationCondition mapRow(ResultSet resultSet, int i) throws SQLException {
+                HydroStationCondition row = new HydroStationCondition();
+                row.setColumn1(resultSet.getInt(Constants.TABLE_HYDROSTATION_COLUMN1));
+                row.setColumn2(resultSet.getString(Constants.TABLE_HYDROSTATION_COLUMN2));
+                row.setColumn3(resultSet.getFloat(Constants.TABLE_HYDROSTATION_COLUMN3));
+                row.setColumn4(resultSet.getFloat(Constants.TABLE_HYDROSTATION_COLUMN4));
+                row.setColumn5(resultSet.getInt(Constants.TABLE_HYDROSTATION_COLUMN5));
+                row.setColumn6(resultSet.getInt(Constants.TABLE_HYDROSTATION_COLUMN6));
+                return row;
+            }
+        });
+        return resultList;
     }
 }

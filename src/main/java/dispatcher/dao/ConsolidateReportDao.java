@@ -17,6 +17,6 @@ public interface ConsolidateReportDao {
 
     List<ConsumptionControl> getConsumption();
 
-    HydroStationCondition getHydroStationCondition();
+    List<HydroStationCondition> getHydroStationCondition();
 
 }
