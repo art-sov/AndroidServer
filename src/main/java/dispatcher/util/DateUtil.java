@@ -61,4 +61,28 @@ public class DateUtil {
             return date + ":00";
         }
     }
+
+    public String getDateForConsolidateReport() {
+        Calendar calendar = Calendar.getInstance();
+
+        if (date.equals("current")) {
+            Date currentDate = new Date();
+            calendar.setTime(currentDate);
+            calendar.add(Calendar.DATE, -1);
+            currentDate = calendar.getTime();
+
+            SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            return formatDate.format(currentDate) + ":00";
+        }
+        else {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            try {
+                calendar.setTime(sdf.parse(date));
+                date = sdf.format(calendar.getTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return date + ":00";
+        }
+    }
 }

@@ -33,7 +33,7 @@ public class ConsolidateReportDaoImpl implements ConsolidateReportDao {
 
     //consolidate report table 1
     public List<BalanceIPSUkraine> getBalance() {
-        String date = dateUtil.getDate();
+        String date = dateUtil.getDateYesterday();
 
         String sql = "SELECT v.*, e.VALUE EMERGY FROM (SELECT 1 IND,'Година' NAME, a.H_MIN MIN_H, b.H_MAX MAX_H FROM\n" +
                 "(SELECT /*+INDEX_COMBINE(VED)*/  TO_NUMBER(TO_CHAR(TIMES,'hh24')) H_MIN FROM OIK_BASE.VED WHERE IND=1498 " +
@@ -93,7 +93,7 @@ public class ConsolidateReportDaoImpl implements ConsolidateReportDao {
     //-----------------------------------------------------------------------------------
     //consolidate report table 2
     public List<ConsumptionControl> getConsumption() {
-        String date = dateUtil.getDate();
+        String date = dateUtil.getDateForConsolidateReport();
 
         String sql = "SELECT CASE WHEN n.N=1 THEN 1 WHEN n.N=2 THEN 2 WHEN n.N=3  THEN 3\n" +
                 "            WHEN n.N=4 THEN 4 WHEN n.N=5 THEN 5 WHEN n.N=6  THEN 6\n" +
@@ -275,7 +275,7 @@ public class ConsolidateReportDaoImpl implements ConsolidateReportDao {
     }
 
     public String getMaxTime() {
-        String date = dateUtil.getDate();
+        String date = dateUtil.getDateForConsolidateReport();
         String sql = "SELECT /* +INDEX(PK_ARHIVTI)  */  TO_CHAR(TIME,'hh24:mi') T_MAX FROM OIK_BASE.ARHIVTI  WHERE IND = 1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1 \n" +
                 "AND TO_NUMBER(TO_CHAR(TIME,'MI')) IN (0,10,20,30,40,50) AND PARAMS =(\n" +
                 "SELECT /* +INDEX(PK_ARHIVTI)  */  MAX(PARAMS) FROM OIK_BASE.ARHIVTI WHERE IND=1628 AND TIME BETWEEN TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS')) AND TRUNC(TO_DATE('" + date + "','dd.mm.yyyy HH24:MI:SS'))+1\n" +
@@ -286,7 +286,7 @@ public class ConsolidateReportDaoImpl implements ConsolidateReportDao {
     //---------------------------------------------------------------------------------
     //consolidate report table 3
     public List<HydroStationCondition> getHydroStationCondition() {
-        String date = dateUtil.getDateYesterday();
+        String date = dateUtil.getDateForConsolidateReport();
 
         String sql = "SELECT ID,NAME,TO_CHAR(NPR,'999.99') NPR,HI_BJEF,INCOME,OUTCOME FROM\n" +
                 "  (SELECT 1 ID, 103.0 NPR, 513531 STAN_COD FROM DUAL UNION\n" +

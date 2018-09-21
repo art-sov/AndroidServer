@@ -1,15 +1,15 @@
 package dispatcher.controller;
 
+import com.google.gson.Gson;
 import dispatcher.dto.StationDto;
-import dispatcher.model.BalanceIPSUkraine;
-import dispatcher.model.ConsumptionControl;
-import dispatcher.model.HydroStationCondition;
-import dispatcher.model.User;
+import dispatcher.model.*;
 import dispatcher.service.ConsolidateService;
+import dispatcher.service.RemarksService;
 import dispatcher.service.StationService;
 import dispatcher.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,13 +29,19 @@ public class StationConditionController {
 
     private ConsolidateService consolidateService;
 
+    private RemarksService remarksService;
+
+    private static final Gson gson = new Gson();
+
     @Autowired
     public StationConditionController(StationService stationService,
                                       DateUtil dateUtil,
-                                      ConsolidateService consolidateService) {
+                                      ConsolidateService consolidateService,
+                                      RemarksService remarksService) {
         this.stationService = stationService;
         this.dateUtil = dateUtil;
         this.consolidateService = consolidateService;
+        this.remarksService = remarksService;
     }
 
     @RequestMapping(value = "/condition", method = RequestMethod.GET)
@@ -67,10 +73,10 @@ public class StationConditionController {
 
     //consolidate report table 2
     @RequestMapping(value = "/consolidate_consumption_maxtime", method = RequestMethod.GET)
-    public ResponseEntity<String> getTimeMax(@RequestParam String date){
+    public ResponseEntity<MaxTime> getTimeMax(@RequestParam String date){
         dateUtil.setDate(date);
         String result = consolidateService.getMaxTime();
-        return new ResponseEntity<String>(result, HttpStatus.OK);
+        return new ResponseEntity<>(new MaxTime(result), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/consolidate_consumption", method = RequestMethod.GET)
@@ -88,5 +94,14 @@ public class StationConditionController {
 
         List<HydroStationCondition> hydroStationConditions = consolidateService.getHydroStationCondition();
         return new ResponseEntity<List<HydroStationCondition>>(hydroStationConditions, HttpStatus.OK);
+    }
+
+    //remarks
+    @RequestMapping(value = "remarks", method = RequestMethod.GET)
+    public ResponseEntity<String> getRemarks(@RequestParam String date) {
+        dateUtil.setDate(date);
+
+        String remarks = remarksService.getRemarks();
+        return new ResponseEntity<>(remarks, HttpStatus.OK);
     }
 }
