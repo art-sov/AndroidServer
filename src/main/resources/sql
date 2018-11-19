@@ -1,0 +1,18 @@
+SELECT f.dates, l.stan_fullname_rus, l.stan_fullname_ukr, k.name, f.input, f.output, f.rest
+FROM FUEL_MSSQL f, status.LIST_STAN l, FUEL_MSSQL_KEY k
+WHERE f.stancod = l.stan_cod and f.TYPE_FUEL = k.id and DATES in (
+TRUNC(TO_DATE('22.09.2018 00:00:00', 'dd.mm.yyyy HH24:MI:SS')),
+TRUNC(TO_DATE('23.09.2018 00:00:00', 'dd.mm.yyyy HH24:MI:SS')),
+TRUNC(TO_DATE('24.09.2018 00:00:00', 'dd.mm.yyyy HH24:MI:SS')))
+order by f.DATES;
+
+
+SELECT f.dates, l.stan_fullname_rus, l.stan_fullname_ukr, k.name, f.input, f.output, f.rest
+FROM FUEL_MSSQL f, status.LIST_STAN l, FUEL_MSSQL_KEY k
+WHERE f.stancod = l.stan_cod and f.TYPE_FUEL = k.id and k.id = 0 and DATES =
+TRUNC(TO_DATE('23.09.2018 00:00:00', 'dd.mm.yyyy HH24:MI:SS'));
+
+SELECT f.dates, l.stan_fullname_rus, l.stan_fullname_ukr, k.name, f.input, f.output, f.rest
+FROM FUEL_MSSQL f, status.LIST_STAN l, FUEL_MSSQL_KEY k
+WHERE f.stancod = l.stan_cod and f.TYPE_FUEL = k.id and k.id = 0 and DATES =
+TRUNC(TO_DATE('08.10.2018 00:00:00', 'dd.mm.yyyy HH24:MI:SS'));

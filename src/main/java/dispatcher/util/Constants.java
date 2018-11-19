@@ -29,4 +29,15 @@ public class Constants {
     public final static String TABLE_HYDROSTATION_COLUMN4 = "HI_BJEF";
     public final static String TABLE_HYDROSTATION_COLUMN5 = "INCOME";
     public final static String TABLE_HYDROSTATION_COLUMN6 = "OUTCOME";
+
+    //columns of fuel flow table
+    public final static String TABLE_FUEL_FLOW_DATE = "DATES";
+    public final static String TABLE_FUEL_FLOW_STAN_COD = "STAN_COD";
+    public final static String TABLE_FUEL_FLOW_STANCOD = "STANCOD";
+    public final static String TABLE_FUEL_FLOW_STAN_NAME_RUS = "STAN_FULLNAME_RUS";
+    public final static String TABLE_FUEL_FLOW_STAN_NAME_UKR = "STAN_FULLNAME_UKR";
+    public final static String TABLE_FUEL_FLOW_NAME_FUEL = "NAME";
+    public final static String TABLE_FUEL_FLOW_IN = "INPUT";
+    public final static String TABLE_FUEL_FLOW_OUT = "OUTPUT";
+    public final static String TABLE_FUEL_FLOW_REST = "REST";
 }

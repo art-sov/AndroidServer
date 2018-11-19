@@ -1,19 +1,21 @@
 package dispatcher.controller;
 
 import com.google.gson.Gson;
+import dispatcher.dto.FuelFlowDto;
 import dispatcher.dto.StationDto;
 import dispatcher.model.*;
 import dispatcher.service.ConsolidateService;
+import dispatcher.service.FuelFlowService;
 import dispatcher.service.RemarksService;
 import dispatcher.service.StationService;
 import dispatcher.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sovalov.AV on 20.04.2018.
@@ -31,17 +33,21 @@ public class StationConditionController {
 
     private RemarksService remarksService;
 
+    private FuelFlowService fuelFlowService;
+
     private static final Gson gson = new Gson();
 
     @Autowired
     public StationConditionController(StationService stationService,
                                       DateUtil dateUtil,
                                       ConsolidateService consolidateService,
-                                      RemarksService remarksService) {
+                                      RemarksService remarksService,
+                                      FuelFlowService fuelFlowService) {
         this.stationService = stationService;
         this.dateUtil = dateUtil;
         this.consolidateService = consolidateService;
         this.remarksService = remarksService;
+        this.fuelFlowService = fuelFlowService;
     }
 
     @RequestMapping(value = "/condition", method = RequestMethod.GET)
@@ -103,5 +109,23 @@ public class StationConditionController {
 
         String remarks = remarksService.getRemarks();
         return new ResponseEntity<>(remarks, HttpStatus.OK);
+    }
+
+    // table "fuel flow in power plants (3 days)"
+    // database: COMMON.FUEL_MSSQL_KEY, COMMON.FUEL_MSSQL, STSTUS.LIST_STAN
+    @RequestMapping(value = "fuel_flow_coal", method = RequestMethod.GET)
+    public ResponseEntity<List<Map<Integer, FuelFlowDto>>> getFuelFlowCoal(@RequestParam String date){
+
+        dateUtil.setDate(date);
+        List<Map<Integer, FuelFlowDto>> list = fuelFlowService.getFuelFlowCoal();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "fuel_flow_oil", method = RequestMethod.GET)
+    public ResponseEntity<List<FuelFlow>> getFuelFlowOil(@RequestParam String date) {
+
+        dateUtil.setDate(date);
+        List<FuelFlow> list = fuelFlowService.getFuelFlowOil();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
