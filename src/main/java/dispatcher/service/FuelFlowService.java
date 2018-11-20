@@ -14,11 +14,11 @@ import java.util.*;
 @Service
 public class FuelFlowService {
 
-    public static final String COAL_A_SH = "АШ стан";
-    public static final String COAL_G_D = "ГиД стан";
-    public static final String COAL_TOTAL = "Всего";
-    public static final String GAS = "Газ";
-    public static final String OIL = "Мазут";
+    private static final String COAL_A_SH = "АШ стан";
+    private static final String COAL_G_D = "ГиД стан";
+    private static final String COAL_TOTAL = "Всего";
+    private static final String GAS = "Газ";
+    private static final String OIL = "Мазут";
 
     private Map<Integer, FuelFlow> mapCoalASH;
     private Map<Integer, FuelFlow> mapCoalGD;
@@ -41,9 +41,9 @@ public class FuelFlowService {
 
         List<Map<Integer, FuelFlowDto>> resultList = new ArrayList<>();
 
-        List<FuelFlow> listToday = fuelFlow.getListFuelFlow(0);
-        List<FuelFlow> listYesterday = fuelFlow.getListFuelFlow(-1);
-        List<FuelFlow> listAfterYesterday = fuelFlow.getListFuelFlow(-2);
+        List<FuelFlow> listToday = fuelFlow.getListCoalFlow(0);
+        List<FuelFlow> listYesterday = fuelFlow.getListCoalFlow(-1);
+        List<FuelFlow> listAfterYesterday = fuelFlow.getListCoalFlow(-2);
 
         createDto(listAfterYesterday);
         resultList.add(mapDto);
@@ -259,6 +259,26 @@ public class FuelFlowService {
     }
 
     public List<FuelFlow> getFuelFlowOil(){
-        return fuelFlow.getListOilFlow();
+        return fuelFlow.getListFuelFlow(3);
+    }
+
+    public List<FuelFlow> getFuelFlowGas(){
+        return fuelFlow.getListFuelFlow(2);
+    }
+
+    public List<FuelFlow> getFuelFlowCoal2(){
+
+        List<FuelFlow> resultList = new ArrayList<>();
+
+        List<FuelFlow> coalASH = fuelFlow.getListFuelFlow(5);
+        resultList.addAll(coalASH);
+
+        List<FuelFlow> coalGD = fuelFlow.getListFuelFlow(6);
+        resultList.addAll(coalGD);
+
+        List<FuelFlow> coalTotal = fuelFlow.getListFuelFlow(4);
+        resultList.addAll(coalTotal);
+
+        return resultList;
     }
 }

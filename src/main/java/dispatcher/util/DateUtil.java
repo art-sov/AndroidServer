@@ -35,6 +35,21 @@ public class DateUtil {
         return date;
     }
 
+    public Date getSelectedDate() {
+        Date selectedDate = null;
+        try {
+            if (date.equals("current")) {
+                selectedDate = new Date();
+            } else {
+                SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                selectedDate = formatDate.parse(date);
+            }
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
+        return selectedDate;
+    }
+
     public String getDateYesterday() {
 
         Calendar calendar = Calendar.getInstance();

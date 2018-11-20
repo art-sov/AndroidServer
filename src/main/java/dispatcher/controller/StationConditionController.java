@@ -121,11 +121,27 @@ public class StationConditionController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "fuel_flow_coal2", method = RequestMethod.GET)
+    public ResponseEntity<List<FuelFlow>> getFuelFlowCoal2(@RequestParam String date){
+
+        dateUtil.setDate(date);
+        List<FuelFlow> list = fuelFlowService.getFuelFlowCoal2();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "fuel_flow_oil", method = RequestMethod.GET)
     public ResponseEntity<List<FuelFlow>> getFuelFlowOil(@RequestParam String date) {
 
         dateUtil.setDate(date);
         List<FuelFlow> list = fuelFlowService.getFuelFlowOil();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "fuel_flow_gas", method = RequestMethod.GET)
+    public ResponseEntity<List<FuelFlow>> getFuelFlowGas(@RequestParam String date) {
+
+        dateUtil.setDate(date);
+        List<FuelFlow> list = fuelFlowService.getFuelFlowGas();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }

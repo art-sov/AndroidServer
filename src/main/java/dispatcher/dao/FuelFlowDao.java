@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface FuelFlowDao {
 
-    List<FuelFlow> getListFuelFlow(int day);
+    List<FuelFlow> getListCoalFlow(int day);
 
-    List<FuelFlow> getListOilFlow();
+    List<FuelFlow> getListFuelFlow(int type_fuel);
 }

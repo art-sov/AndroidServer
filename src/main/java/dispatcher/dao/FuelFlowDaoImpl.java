@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Sovalov.AV on 14.11.2018.
@@ -21,26 +20,35 @@ public class FuelFlowDaoImpl implements FuelFlowDao{
 
     private final JdbcTemplate jdbcTemplate;
     private DateUtil dateUtil;
+    private Map<Integer, String> mapFuel = new HashMap<>();
 
     @Autowired
     public FuelFlowDaoImpl(JdbcTemplate jdbcTemplate, DateUtil dateUtil) {
         this.jdbcTemplate = jdbcTemplate;
         this.dateUtil = dateUtil;
+        mapFuel.put(3,"Мазут");
+        mapFuel.put(1,"АШ");
+        mapFuel.put(0,"ГиД");
+        mapFuel.put(2,"Газ");
+        mapFuel.put(4,"Всего");
+        mapFuel.put(5,"АШ стан");
+        mapFuel.put(6,"ГиД стан");
     }
 
     @Override
-    public List<FuelFlow> getListFuelFlow(int day) {
+    public List<FuelFlow> getListCoalFlow(int day) {
 
-        String date = null;
+        Date selectedDate = dateUtil.getSelectedDate();
+        java.sql.Date dateSql = null;
 
         if (day == 0){
-            date = dateUtil.getDateYesterday();
+            dateSql = getDate(selectedDate, -1);
         }
         if (day == -1){
-            date = dateUtil.getDateAfterYesterday();
+            dateSql = getDate(selectedDate, -2);
         }
         if (day == -2) {
-            date = dateUtil.getDateTwoDaysAgo();
+            dateSql = getDate(selectedDate, -3);
         }
 
         List<FuelFlow> fuelFlowList = new ArrayList<>();
@@ -49,9 +57,10 @@ public class FuelFlowDaoImpl implements FuelFlowDao{
                 "FROM COMMON.FUEL_MSSQL F, STATUS.LIST_STAN L, COMMON.FUEL_MSSQL_KEY K " +
                 "WHERE F.STANCOD = L.STAN_COD " +
                 "AND F.TYPE_FUEL = K.ID " +
-                "AND DATES = TRUNC(TO_DATE('" + date + "', 'dd.mm.yyyy HH24:MI:SS')) " +
+                "AND DATES = ? " +
                 "ORDER BY L.STAN_COD";
-        fuelFlowList = jdbcTemplate.query(sql, new RowMapper<FuelFlow>() {
+
+        fuelFlowList = jdbcTemplate.query(sql, new Object[]{dateSql}, new RowMapper<FuelFlow>() {
             @Override
             public FuelFlow mapRow(ResultSet resultSet, int i) throws SQLException {
                 FuelFlow fuelFlow = new FuelFlow();
@@ -66,35 +75,33 @@ public class FuelFlowDaoImpl implements FuelFlowDao{
                 return fuelFlow;
             }
         });
-        //System.out.println(fuelFlowList);
         return fuelFlowList;
     }
 
     @Override
-    public List<FuelFlow> getListOilFlow() {
+    public List<FuelFlow> getListFuelFlow(int type_fuel) {
 
-        String dateYesterday = dateUtil.getDateYesterday();
-        String dateAfterYesterday = dateUtil.getDateAfterYesterday();
-        String dateTwoDaysAgo = dateUtil.getDateTwoDaysAgo();
+        Date selectedDate = dateUtil.getSelectedDate();
 
-         List<FuelFlow> list = new ArrayList<>();
+        //List<FuelFlow> list = new ArrayList<>();
 
         String sql = "SELECT DATES, L.STAN_FULLNAME_RUS, L.STAN_FULLNAME_UKR, STANCOD, INPUT, OUTPUT, REST" +
-                "  FROM COMMON.FUEL_MSSQL,  STATUS.LIST_STAN L WHERE STANCOD = L.STAN_COD" +
-                " AND TYPE_FUEL = 3" +
-                " AND DATES IN (TRUNC(TO_DATE('" + dateYesterday + "', 'dd.mm.yyyy HH24:MI:SS'))," +
-                "              TRUNC(TO_DATE('" + dateAfterYesterday + "', 'dd.mm.yyyy HH24:MI:SS'))," +
-                "              TRUNC(TO_DATE('" + dateTwoDaysAgo + "', 'dd.mm.yyyy HH24:MI:SS')))" +
+                " FROM COMMON.FUEL_MSSQL,  STATUS.LIST_STAN L" +
+                " WHERE STANCOD = L.STAN_COD" +
+                " AND TYPE_FUEL = ?" +
+                " AND DATES IN (?, ?, ?)" +
                 " ORDER BY DATES";
 
-        list = jdbcTemplate.query(sql, new RowMapper<FuelFlow>() {
+        return  jdbcTemplate.query(sql, new Object[]{type_fuel, getDate(selectedDate, -1),
+                getDate(selectedDate,-2), getDate(selectedDate, -3)},
+                new RowMapper<FuelFlow>() {
             @Override
             public FuelFlow mapRow(ResultSet resultSet, int i) throws SQLException {
                 FuelFlow fuelFlow = new FuelFlow();
                 fuelFlow.setDate(resultSet.getDate(Constants.TABLE_FUEL_FLOW_DATE));
                 fuelFlow.setStationNameRus(resultSet.getString(Constants.TABLE_FUEL_FLOW_STAN_NAME_RUS));
                 fuelFlow.setStationNameUkr(resultSet.getString(Constants.TABLE_FUEL_FLOW_STAN_NAME_UKR));
-                fuelFlow.setNameFuel("Мазут");
+                fuelFlow.setNameFuel(mapFuel.get(type_fuel));
                 fuelFlow.setStationCode(resultSet.getInt(Constants.TABLE_FUEL_FLOW_STANCOD));
                 fuelFlow.setIn(resultSet.getInt(Constants.TABLE_FUEL_FLOW_IN));
                 fuelFlow.setOut(resultSet.getInt(Constants.TABLE_FUEL_FLOW_OUT));
@@ -102,6 +109,16 @@ public class FuelFlowDaoImpl implements FuelFlowDao{
                 return fuelFlow;
             }
         });
-        return list;
+    }
+
+    private java.sql.Date getDate(Date selectedDate, int numberOfDaysAgo){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(selectedDate);
+        calendar.add(Calendar.DATE, numberOfDaysAgo);
+
+        selectedDate = calendar.getTime();
+
+        return new java.sql.Date(selectedDate.getTime());
     }
 }
