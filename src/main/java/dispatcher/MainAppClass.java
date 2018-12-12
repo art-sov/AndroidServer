@@ -25,10 +25,10 @@ public class MainAppClass extends SpringBootServletInitializer{
 
 
     */
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//        return builder.sources(MainAppClass.class);
-//    }
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(MainAppClass.class);
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(MainAppClass.class, args);

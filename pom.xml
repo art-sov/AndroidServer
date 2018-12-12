@@ -7,8 +7,8 @@
     <groupId>EnergyUA</groupId>
     <artifactId>AndroidServer</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-    <!--<packaging>war</packaging>-->
+    <!--<packaging>jar</packaging>-->
+    <packaging>war</packaging>
 
     <name>dispatcher</name>
     <description>Back-end for Android app</description>
@@ -24,7 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <!--<start-class>dispatcher.MainAppClass</start-class>-->
+        <start-class>dispatcher.MainAppClass</start-class>
     </properties>
 
     <repositories>
@@ -50,11 +50,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.oracle</groupId>

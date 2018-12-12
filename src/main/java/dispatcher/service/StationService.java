@@ -110,7 +110,7 @@ public class StationService {
 
         Date date = stationDtoList.get(0).getDate();
 
-        stationDtoList.add(1, new StationDto(513002, date));
+        //атомные электростанции
         stationDtoList.add(0, new StationDto(370094, date));
         stationDtoList.add(0, new StationDto(370092, date));
         stationDtoList.add(0, new StationDto(370079, date));

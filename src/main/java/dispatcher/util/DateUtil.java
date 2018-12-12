@@ -13,6 +13,7 @@ import java.util.Date;
 @Component
 public class DateUtil {
 
+    //todo change using dates from String to Date
     private String date;
 
     public DateUtil() {
